@@ -21,6 +21,7 @@ except ImportError:
 
 
 # Wether or not to use django-multilingual for event texts
+# NOT YET SUPPORTED: 
 USE_MULTILINGUAL = getattr(settings, 'EVENTAPP_USE_MULTILINGUAL', False) 
 if USE_MULTILINGUAL:
     import multilingual
@@ -37,6 +38,35 @@ class Category(models.Model):
         name = models.CharField(max_length=200)
         slug = models.SlugField(null=True, blank=True)
         description = models.TextField(null=True, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+    def save(self):
+        """Auto-populate an empty slug field from the Category name and
+        if it conflicts with an existing slug then append a number and try
+        saving again.
+        """
+        import re
+        from django.template.defaultfilters import slugify
+        
+        if not self.slug:
+            self.slug = slugify(self.name)  # Where self.name is the field used for 'pre-populate from'
+        
+        while True:
+            try:
+                super(Category, self).save()
+            # Assuming the IntegrityError is due to a slug fight
+            except IntegrityError:
+                match_obj = re.match(r'^(.*)-(\d+)$', self.slug)
+                if match_obj:
+                    next_int = int(match_obj.group(2)) + 1
+                    self.slug = match_obj.group(1) + '-' + str(next_int)
+                else:
+                    self.slug += '-2'
+            else:
+                break
+
    
 class Event(models.Model):
     """Event Model used to store data for one event.
@@ -76,6 +106,44 @@ class Event(models.Model):
         location_short_name = models.CharField(max_length=100, blank=True, null=True)
     
     date_created = models.DateTimeField(blank=True, auto_now_add=True)    
-    
-    
+    is_published = models.BooleanField(blank=True, default=True)    
+    def __unicode__(self):
+        FORMAT = '%H:%M %d/%m/%Y'
+        return u"%s (%s - %s)" % (self.name, self.start.strftime(FORMAT),  self.end.strftime(FORMAT))
+ 
+    @models.permalink
+    def get_absolute_url(self):
+       return ('eventapp_view_event', (), {
+            'year': self.start.year,
+            'month': '%02d' % self.start.month,
+            'day': '%02d' % self.start.day,
+            'slug':self.slug
+            }
+            )
+
+    def save(self):
+        """Auto-populate an empty slug field from the Category name and
+        if it conflicts with an existing slug then append a number and try
+        saving again.
+        """
+        import re
+        from django.template.defaultfilters import slugify
+        
+        if not self.slug:
+            self.slug = slugify(self.name)  # Where self.name is the field used for 'pre-populate from'
+        
+        while True:
+            try:
+                super(Event, self).save()
+            # Assuming the IntegrityError is due to a slug fight
+            except IntegrityError:
+                match_obj = re.match(r'^(.*)-(\d+)$', self.slug)
+                if match_obj:
+                    next_int = int(match_obj.group(2)) + 1
+                    self.slug = match_obj.group(1) + '-' + str(next_int)
+                else:
+                    self.slug += '-2'
+            else:
+                break
+
 
