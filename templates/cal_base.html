@@ -1,0 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+    <title>Event App</title>
+</head>
+<body>
+    {% load calendar_tag %}
+    
+    <center>
+    <div style="border:solid 1px green;width:215px;padding-left:10px;">
+    {% month_cal 2009 3 %}
+    </div></center>
+    <center>
+    <div>
+    {% block display_events %}
+    {% endblock %}
+    </div></center>
+</body>
+</html>
