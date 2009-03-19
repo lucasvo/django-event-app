@@ -75,8 +75,8 @@ class Event(models.Model):
           Geocoding of the location
     """
 
-    start = models.DateTimeField(_('Start date and time'), blank=True, null=True)
-    end = models.DateTimeField(_('End date and time'), blank=True, null=True)
+    start_date = models.DateTimeField(_('Start date and time'), blank=True, null=True)
+    end_date = models.DateTimeField(_('End date and time'), blank=True, null=True)
 
 
     rsvp_link = models.URLField(_('RSVP Link'), blank=True, null=True, help_text=_('You can enter a link to a site where people can sign up for the event. Example: meetup.com or facebook.com'))
@@ -107,6 +107,7 @@ class Event(models.Model):
     
     date_created = models.DateTimeField(blank=True, auto_now_add=True)    
     is_published = models.BooleanField(blank=True, default=True)    
+
     def __unicode__(self):
         FORMAT = '%H:%M %d/%m/%Y'
         return u"%s (%s - %s)" % (self.name, self.start.strftime(FORMAT),  self.end.strftime(FORMAT))
