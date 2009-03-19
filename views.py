@@ -1,6 +1,5 @@
 from django.http import HttpResponse
 from django.template import RequestContext
-from django_project.eventapp.models import Event
 from django.shortcuts import render_to_response, get_object_or_404
 
 from eventapp.models import Event, Category
