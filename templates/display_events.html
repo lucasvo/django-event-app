@@ -1,0 +1,11 @@
+{% extends 'cal_base.html' %}
+{% block display_events %}
+    {% if events|length_is:"0" %}
+        <h1>No Events on {{day}}-{{month}}-{{year}}</h1>
+    {% else %}
+        <h1>Events on {{day}}-{{month}}-{{year}}</h1>
+        {% for event in events %}
+            {{forloop.counter}}.  {{event.slug}}<br />
+        {% endfor %}
+    {% endif %}
+{% endblock %}
