@@ -2,7 +2,7 @@
 from datetime import date, timedelta
 
 from django import template
-from django_project.eventapp.models import Event # You need to change this if you like to add your own events to the calendar
+from eventapp.models import Event
 
 register = template.Library()
 
@@ -19,7 +19,7 @@ def get_last_day_of_month(year, month):
 
 
 def month_cal(year, month):
-    event_list = Event.objects.filter(start__year=year,start__month=month)
+    event_list = Event.objects.filter(start_date__year=year,start_date__month=month)
     #event_list = []
     #for i in tmp_list:
     #    if i.start.year == year and i.start.month == month:
@@ -43,7 +43,7 @@ def month_cal(year, month):
         cal_day['event'] = False
         for event in event_list:
             #if day == event.start.date():
-            if day >= event.start.date() and day <= event.end.date():
+            if day >= event.start_date.date() and day <= event.end_date.date():
                 cal_day['event'] = True
                 cal_day['slug'] = event.slug
         if day.month == month:

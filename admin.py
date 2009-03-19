@@ -8,18 +8,18 @@ if USE_MULTILINGUAL:
 
 from eventapp.models import Category, Event
 
-if USE_MULTILINGUAL:
-    class EventMultilingualAdmin(multilingual.ModelAdmin):
-        list_display = ('name','start','end')
-        list_filter = ['categories']
-    class CategoryMultilingualAdmin(multilingual.ModelAdmin):
-        pass
-    admin.site.register(Event, EventMultilingualAdmin)
-    admin.site.register(Category, CategoryMultilingualAdmin)
-else:
-    class EventAdmin(admin.ModelAdmin):
-        list_display = ('name','start','end')
-        list_filter = ['categories']
+#if USE_MULTILINGUAL:
+#    class EventMultilingualAdmin(multilingual.ModelAdmin):
+#        list_display = ('name','start','end')
+#        list_filter = ['categories']
+#    class CategoryMultilingualAdmin(multilingual.ModelAdmin):
+#        pass
+#    admin.site.register(Event, EventMultilingualAdmin)
+#    admin.site.register(Category, CategoryMultilingualAdmin)
+#else:
+ class EventAdmin(admin.ModelAdmin):
+    list_display = ('name','start','end')
+    list_filter = ['categories']
 
     admin.site.register(Event, EventAdmin)
     admin.site.register(Category)
