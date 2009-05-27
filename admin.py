@@ -17,7 +17,7 @@ from eventapp.models import Category, Event
 #    admin.site.register(Event, EventMultilingualAdmin)
 #    admin.site.register(Category, CategoryMultilingualAdmin)
 #else:
- class EventAdmin(admin.ModelAdmin):
+class EventAdmin(admin.ModelAdmin):
     list_display = ('name','start','end')
     list_filter = ['categories']
 
